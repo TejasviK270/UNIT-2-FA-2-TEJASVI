@@ -83,16 +83,20 @@ st.write(f"💧 Total Intake: {total} ml")
 st.write(f"📉 Remaining: {remaining} ml")
 st.write(f"📈 Progress: {progress:.1f}%")
 
-# ------------------ Emoji-Based Mascot Reaction ------------------
-st.subheader("🌟 Motivation & Emoji Mascot")
+# ------------------ Motivation & Mascot ------------------
+st.subheader("🌟 Motivation & Mascot Reaction")
 if progress == 0:
-    st.warning("😢 You haven't logged any water yet. Let's get started!")
+    st.warning("💡 Stay hydrated! You can do it!")
+    st.markdown("🐢 Turtle Mascot: 😞 Looking a bit thirsty!")
 elif progress < 50:
     st.info("🙂 You're on your way! Keep sipping!")
+    st.markdown("🐢 Turtle Mascot: 😐 Staying hopeful!")
 elif progress < 100:
     st.success("😄 Great job! You're almost there!")
+    st.markdown("🐢 Turtle Mascot: 😊 Smiling and cheering you on!")
 else:
     st.success("🎉 Fantastic! You've reached your hydration goal!")
+    st.markdown("🐢 Turtle Mascot: 😄 Clapping with joy!")
 
 # ------------------ End-of-Day Summary ------------------
 if st.button("📅 End-of-Day Summary"):
