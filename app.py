@@ -83,22 +83,16 @@ st.write(f"💧 Total Intake: {total} ml")
 st.write(f"📉 Remaining: {remaining} ml")
 st.write(f"📈 Progress: {progress:.1f}%")
 
-# ------------------ Motivational Messages ------------------
-st.subheader("🌟 Motivation")
-if progress >= 100:
-    st.success("🏆 Amazing! You've reached your goal!")
-    mascot = "🎉 Clap! You did it!"
-elif progress >= 75:
-    st.info("👏 Great job! You're almost there!")
-    mascot = "😊 Smile! Almost there!"
-elif progress >= 50:
-    st.info("😊 Keep going! You're halfway there!")
-    mascot = "👋 Wave! Keep going!"
+# ------------------ Emoji-Based Mascot Reaction ------------------
+st.subheader("🌟 Motivation & Emoji Mascot")
+if progress == 0:
+    st.warning("😢 You haven't logged any water yet. Let's get started!")
+elif progress < 50:
+    st.info("🙂 You're on your way! Keep sipping!")
+elif progress < 100:
+    st.success("😄 Great job! You're almost there!")
 else:
-    st.warning("💡 Stay hydrated! You can do it!")
-    mascot = "💧 Let's hydrate!"
-
-st.write(f"🐢 Mascot Reaction: {mascot}")
+    st.success("🎉 Fantastic! You've reached your hydration goal!")
 
 # ------------------ End-of-Day Summary ------------------
 if st.button("📅 End-of-Day Summary"):
