@@ -1,7 +1,5 @@
 # app.py
 
-# app.py
-
 import streamlit as st
 import random
 
@@ -24,12 +22,24 @@ if "goal" not in st.session_state:
     st.session_state.goal = 0
 if "age_group" not in st.session_state:
     st.session_state.age_group = None
+if "tips" not in st.session_state:
+    st.session_state.tips = [
+        "Drink a glass of water before each meal.",
+        "Keep a water bottle on your desk.",
+        "Start your day with a glass of water.",
+        "Add fruit slices to make water tastier.",
+        "Use a hydration reminder app."
+    ]
+
+# ------------------ Sidebar Tips ------------------
+st.sidebar.title("💡 Daily Hydration Tip")
+st.sidebar.write(random.choice(st.session_state.tips))
 
 # ------------------ Age Selection ------------------
 st.subheader("👤 Select Your Age Group")
 age_group = st.selectbox("Choose your age group:", list(age_groups.keys()))
-default_goal = age_groups[age_group]
-adjusted_goal = st.number_input("Suggested goal (ml):", value=default_goal, step=100)
+standard_goal = age_groups[age_group]
+adjusted_goal = st.number_input("Suggested goal (ml):", value=standard_goal, step=100)
 st.session_state.goal = adjusted_goal
 st.session_state.age_group = age_group
 
@@ -53,7 +63,8 @@ progress = min((total / goal) * 100, 100)
 st.subheader("📊 Your Progress")
 st.progress(progress / 100)
 st.write(f"💧 Total Intake: {total} ml")
-st.write(f"🎯 Goal: {goal} ml")
+st.write(f"🎯 Your Goal: {goal} ml")
+st.write(f"📏 Standard Goal for {age_group}: {standard_goal} ml")
 st.write(f"📉 Remaining: {remaining} ml")
 st.write(f"📈 Progress: {progress:.1f}%")
 
@@ -61,20 +72,34 @@ st.write(f"📈 Progress: {progress:.1f}%")
 st.subheader("🌟 Motivation")
 if progress >= 100:
     st.success("🏆 Amazing! You've reached your goal!")
+    mascot = "🎉 Clap! You did it!"
 elif progress >= 75:
     st.info("👏 Great job! You're almost there!")
+    mascot = "😊 Smile! Almost there!"
 elif progress >= 50:
     st.info("😊 Keep going! You're halfway there!")
+    mascot = "👋 Wave! Keep going!"
 else:
     st.warning("💡 Stay hydrated! You can do it!")
+    mascot = "💧 Let's hydrate!"
 
-# ------------------ Daily Tips ------------------
-tips = [
-    "Drink a glass of water before each meal.",
-    "Keep a water bottle on your desk.",
-    "Use a hydration reminder app.",
-    "Start your day with a glass of water.",
-    "Add fruit slices to make water tastier."
-]
-st.subheader("📝 Daily Hydration Tip")
-st.write(random.choice(tips))
+# ------------------ Mascot Reaction ------------------
+st.subheader("🐢 Mascot Reaction")
+st.write(mascot)
+
+# ------------------ End-of-Day Summary ------------------
+if st.button("📅 End-of-Day Summary"):
+    st.balloons()
+    st.success(f"Today you drank {total} ml of water. Great job staying hydrated!")
+
+# ------------------ Dark/Light Mode Toggle ------------------
+theme = st.radio("🌓 Choose Theme:", ["Light", "Dark"])
+if theme == "Dark":
+    st.markdown(
+        """
+        <style>
+        body { background-color: #1e1e1e; color: white; }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
