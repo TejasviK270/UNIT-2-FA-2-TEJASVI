@@ -1,5 +1,7 @@
 # app.py
 
+# app.py
+
 import streamlit as st
 import random
 
@@ -35,15 +37,16 @@ if "tips" not in st.session_state:
 st.sidebar.title("💡 Daily Hydration Tip")
 st.sidebar.write(random.choice(st.session_state.tips))
 
-# ------------------ Age Selection ------------------
-st.subheader("👤 Select Your Age Group")
+# ------------------ Welcome & Age Selection ------------------
+st.subheader("👋 Welcome to WaterBuddy")
+st.markdown("Select your age group to get a personalized hydration goal.")
 age_group = st.selectbox("Choose your age group:", list(age_groups.keys()))
 standard_goal = age_groups[age_group]
 adjusted_goal = st.number_input("Suggested goal (ml):", value=standard_goal, step=100)
 st.session_state.goal = adjusted_goal
 st.session_state.age_group = age_group
 
-# ------------------ Show Standard vs User Goal ------------------
+# ------------------ Goal Comparison ------------------
 st.markdown("### 🎯 Hydration Goals")
 col1, col2 = st.columns(2)
 col1.metric("Standard Goal", f"{standard_goal} ml")
@@ -76,18 +79,18 @@ total = st.session_state.total_intake
 remaining = max(goal - total, 0)
 progress = min((total / goal) * 100, 100)
 
-# ------------------ Visual Feedback ------------------
+# ------------------ Progress Tracker ------------------
 st.subheader("📊 Your Progress")
 st.progress(progress / 100)
 st.write(f"💧 Total Intake: {total} ml")
 st.write(f"📉 Remaining: {remaining} ml")
 st.write(f"📈 Progress: {progress:.1f}%")
 
-# ------------------ Motivation & Mascot ------------------
-st.subheader("🌟 Motivation & Mascot Reaction")
+# ------------------ Mascot Reaction ------------------
+st.subheader("🐢 Turtle Mascot Reaction")
 if progress == 0:
     st.warning("💡 Stay hydrated! You can do it!")
-    st.markdown("🐢 Turtle Mascot: 😞 Looking a bit thirsty!")
+    st.markdown("🐢 Turtle Mascot: 😢 Looking thirsty!")
 elif progress < 50:
     st.info("🙂 You're on your way! Keep sipping!")
     st.markdown("🐢 Turtle Mascot: 😐 Staying hopeful!")
