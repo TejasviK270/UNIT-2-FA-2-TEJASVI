@@ -2,6 +2,8 @@
 
 import streamlit as st
 import random
+import tkinter as tk
+from threading import Timer
 
 # ------------------ Setup ------------------
 st.set_page_config(page_title="WaterBuddy", layout="centered")
@@ -43,6 +45,25 @@ adjusted_goal = st.number_input("Suggested goal (ml):", value=standard_goal, ste
 st.session_state.goal = adjusted_goal
 st.session_state.age_group = age_group
 
+# ------------------ Show Standard vs User Goal ------------------
+st.markdown("### 🎯 Hydration Goals")
+col1, col2 = st.columns(2)
+with col1:
+    st.metric("Standard Goal", f"{standard_goal} ml")
+with col2:
+    st.metric("Your Goal", f"{adjusted_goal} ml")
+
+# ------------------ Unit Converter ------------------
+st.markdown("### 🔄 Unit Converter")
+unit = st.radio("Convert:", ["ml ➡️ cups", "cups ➡️ ml"])
+value = st.number_input("Enter value:", value=250)
+if unit == "ml ➡️ cups":
+    converted = round(value / 240, 2)
+    st.write(f"{value} ml = {converted} cups")
+else:
+    converted = round(value * 240)
+    st.write(f"{value} cups = {converted} ml")
+
 # ------------------ Log Water Intake ------------------
 st.subheader("🚰 Log Your Water Intake")
 log_amount = st.number_input("Enter amount (ml):", value=250, step=50)
@@ -63,8 +84,6 @@ progress = min((total / goal) * 100, 100)
 st.subheader("📊 Your Progress")
 st.progress(progress / 100)
 st.write(f"💧 Total Intake: {total} ml")
-st.write(f"🎯 Your Goal: {goal} ml")
-st.write(f"📏 Standard Goal for {age_group}: {standard_goal} ml")
 st.write(f"📉 Remaining: {remaining} ml")
 st.write(f"📈 Progress: {progress:.1f}%")
 
@@ -83,9 +102,7 @@ else:
     st.warning("💡 Stay hydrated! You can do it!")
     mascot = "💧 Let's hydrate!"
 
-# ------------------ Mascot Reaction ------------------
-st.subheader("🐢 Mascot Reaction")
-st.write(mascot)
+st.write(f"🐢 Mascot Reaction: {mascot}")
 
 # ------------------ End-of-Day Summary ------------------
 if st.button("📅 End-of-Day Summary"):
@@ -100,6 +117,21 @@ if theme == "Dark":
         <style>
         body { background-color: #1e1e1e; color: white; }
         </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+# ------------------ Tkinter Hydration Reminder ------------------
+def show_reminder():
+    root = tk.Tk()
+    root.title("Hydration Reminder")
+    label = tk.Label(root, text="💧 Time to drink water!", font=("Arial", 18), padx=20, pady=20)
+    label.pack()
+    root.after(3000, root.destroy)  # Auto-close after 3 seconds
+    root.mainloop()
+
+if st.button("🔔 Trigger Hydration Reminder"):
+    Timer(1, show_reminder).start()
         """,
         unsafe_allow_html=True
     )
